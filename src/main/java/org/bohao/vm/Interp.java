@@ -11,19 +11,42 @@ import static org.bohao.vm.InstructionSetDefinition.*;
  * Created by bohao on 2016/3/10.
  */
 public class Interp {
+    public static final int MAX_STACK_DEPTH = 1000;
+    public static final int MAX_REGISTER_COUNT = 100;
+
     int ip = 0;
     byte[] code;
+
     int codeSize;
 
-    // TODO stackframe
-    public static final int MAX_REGISTER_COUNT = 1000;
-    Object[] register;
+    int sp = 0; // stack pointer
+    StackFrame[] stackFrames = new StackFrame[MAX_STACK_DEPTH];
+    FunctionSymbol[] functionPool;
 
     public void load(Program prog) {
         this.code = prog.code;
         this.codeSize = prog.codeSize;
-        this.ip = prog.initialAddress;
-        register = new Object[MAX_REGISTER_COUNT];
+        this.functionPool = prog.functionPool;
+        initStack(functionPool);
+    }
+
+    private void initStack(FunctionSymbol[] functionPool) {
+        FunctionSymbol main = null;
+        for (FunctionSymbol aFunctionPool : functionPool) {
+            if (Objects.equals(aFunctionPool.functionName, "main")) {
+                main = aFunctionPool;
+                break;
+            }
+        }
+
+        if (main == null) {
+            stackFrames[sp] = new StackFrame(0, 0);
+            this.ip = 0;
+        }
+        else {
+            stackFrames[sp] = new StackFrame(main.nLocals, main.address);
+            this.ip = main.address;
+        }
     }
 
     /**
@@ -43,27 +66,27 @@ public class Interp {
                         int operand = ByteUtils.byteToInt(code, ip);
                         ip += 4;
                         int nReg = code[ip++];
-                        register[nReg] = operand;
+                        stackFrames[sp].registers[nReg] = operand;
                         break;
                     case INST_ADDI:
                         // addi reg1, reg2, reg3
                         int nReg1 = code[ip++];
                         int nReg2 = code[ip++];
                         int nReg3 = code[ip++];
-                        Integer reg1 = (Integer) register[nReg1];
-                        Integer reg2 = (Integer) register[nReg2];
-                        register[nReg3] = reg1 + reg2;
+                        Integer reg1 = (Integer) stackFrames[sp].registers[nReg1];
+                        Integer reg2 = (Integer) stackFrames[sp].registers[nReg2];
+                        stackFrames[sp].registers[nReg3] = reg1 + reg2;
                         break;
                     case INST_PRINT:
                         nReg = code[ip++];
-                        System.out.println(register[nReg]);
+                        System.out.println(stackFrames[sp].registers[nReg]);
                         break;
                     case INST_JMPE:
                         nReg1 = code[ip++];
                         nReg2 = code[ip++];
                         int address = ByteUtils.byteToInt(code, ip);
                         ip += 4;
-                        if (Objects.equals(register[nReg1], register[nReg2])) {
+                        if (Objects.equals(stackFrames[sp].registers[nReg1], stackFrames[sp].registers[nReg2])) {
                             ip = address;
                         }
                         break;

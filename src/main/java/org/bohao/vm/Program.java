@@ -11,10 +11,18 @@ public class Program {
 
     // start point, main
     public int initialAddress = 0;
+    public FunctionSymbol[] functionPool;
+
+    public Program(byte[] code, int codeSize, FunctionSymbol[] pool) {
+        this.code = code;
+        this.codeSize = codeSize;
+        this.functionPool = pool;
+    }
 
     public Program(byte[] code, int codeSize) {
         this.code = code;
         this.codeSize = codeSize;
+        this.functionPool = new FunctionSymbol[0];
     }
 
 }
