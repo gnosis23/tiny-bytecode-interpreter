@@ -28,4 +28,10 @@ public class InterpTest {
         interp.load(ProgramCases.easy1);
         assertEquals(0, interp.cpu());
     }
+
+    @Test
+    public void testLoop1() throws Exception {
+        interp.load(ProgramCases.loop1);
+        assertEquals(0, interp.cpu());
+    }
 }

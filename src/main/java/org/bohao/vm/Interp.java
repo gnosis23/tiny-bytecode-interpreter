@@ -2,6 +2,8 @@ package org.bohao.vm;
 
 import org.bohao.vm.utils.ByteUtils;
 
+import java.util.Objects;
+
 import static org.bohao.vm.InstructionSetDefinition.*;
 
 /**
@@ -56,10 +58,24 @@ public class Interp {
                         nReg = code[ip++];
                         System.out.println(register[nReg]);
                         break;
+                    case INST_JMPE:
+                        nReg1 = code[ip++];
+                        nReg2 = code[ip++];
+                        int address = ByteUtils.byteToInt(code, ip);
+                        ip += 4;
+                        if (Objects.equals(register[nReg1], register[nReg2])) {
+                            ip = address;
+                        }
+                        break;
+                    case INST_JMP:
+                        address = ByteUtils.byteToInt(code, ip);
+                        ip = address;
+                        break;
                     default:
                         throw new RuntimeException("not support opcode: " + opcode);
                 }
             }
+            System.out.println("Code length error: " + codeSize);
             return -1;
         } catch (Exception e) {
             System.out.println(e.getMessage());
