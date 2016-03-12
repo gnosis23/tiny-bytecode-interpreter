@@ -57,4 +57,58 @@ public class ProgramCases {
             },
             47
     );
+
+    public static Program func1 = new Program(
+            // g():
+            // movir, 1, r1
+            // PRINT r1
+            // main():
+            // movir, 1024, r1
+            // PRINT r1
+            // call g
+            // movir, 2, r1
+            // PRINT 1
+            new byte[] {
+                    INST_MOVIR, 0, 0, 0, 1, 1,
+                    INST_PRINT, 1,
+                    INST_RET,
+                    INST_MOVIR, 0, 0, 4, 0, 1,
+                    INST_PRINT, 1,
+                    INST_CALL, 0, 0, 0, 0,
+                    INST_MOVIR, 0, 0, 0, 2, 1,
+                    INST_PRINT, 1,
+                    INST_GG
+            },
+            100,
+            new FunctionSymbol[]{
+                    new FunctionSymbol("g", 0, 0, 0),
+                    new FunctionSymbol("main", 9, 0, 0)
+            }
+    );
+
+    public static Program func2 = new Program(
+            // g():
+            // addi, r1, r2, r0
+            // RET
+            // main():
+            // movir 1, r1
+            // movir 9, r2
+            // call g r1 r2
+            // PRINT r0
+            // GG
+            new byte[] {
+                    INST_ADDI, 1, 2, 0,
+                    INST_RET,
+                    INST_MOVIR, 0,0,0,1, 1,
+                    INST_MOVIR, 0,0,0,9, 2,
+                    INST_CALL,  0,0,0,0, 1, 2,
+                    INST_PRINT, 0,
+                    INST_GG
+            },
+            100,
+            new FunctionSymbol[]{
+                    new FunctionSymbol("g", 0, 2, 0),
+                    new FunctionSymbol("main", 5, 0, 0)
+            }
+    );
 }

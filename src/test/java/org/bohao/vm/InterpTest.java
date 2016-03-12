@@ -34,4 +34,16 @@ public class InterpTest {
         interp.load(ProgramCases.loop1);
         assertEquals(0, interp.cpu());
     }
+
+    @Test
+    public void testFunc1() throws Exception {
+        interp.load(ProgramCases.func1);
+        assertEquals(0, interp.cpu());
+    }
+
+    @Test
+    public void testFunc2() throws Exception {
+        interp.load(ProgramCases.func2);
+        assertEquals(0, interp.cpu());
+    }
 }

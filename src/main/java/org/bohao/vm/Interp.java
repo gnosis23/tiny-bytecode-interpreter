@@ -94,6 +94,30 @@ public class Interp {
                         address = ByteUtils.byteToInt(code, ip);
                         ip = address;
                         break;
+                    case INST_CALL:
+                        int funcIndex = ByteUtils.byteToInt(code, ip);
+                        ip += 4;
+                        FunctionSymbol func = functionPool[funcIndex];
+
+                        StackFrame frame = new StackFrame(0);
+                        // copy params
+                        for (int i = 0; i < func.nParams; i++) {
+                            int index = code[ip++];
+                            frame.registers[i + 1] = stackFrames[sp].registers[index];
+                        }
+                        frame.retAddress = ip;
+
+                        sp++;
+                        stackFrames[sp] = frame;
+                        ip = func.address;
+                        break;
+                    case INST_RET:
+                        // ret value in r0
+                        stackFrames[sp-1].registers[0] = stackFrames[sp].registers[0];
+
+                        ip = stackFrames[sp].retAddress;
+                        sp--;
+                        break;
                     default:
                         throw new RuntimeException("not support opcode: " + opcode);
                 }
