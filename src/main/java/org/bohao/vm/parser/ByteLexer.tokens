@@ -1,0 +1,13 @@
+T__0=1
+T__1=2
+T__2=3
+T__3=4
+INT=5
+REGISTER=6
+NAME=7
+NEWLINE=8
+WS=9
+'.func'=1
+'.arg='=2
+','=3
+':'=4
