@@ -33,7 +33,7 @@ public class InstructionSetDefinition {
             new Instruction(INST_JMPE, "jmpe", TYPE_REGISTER, TYPE_REGISTER, TYPE_LABEL),
             new Instruction(INST_ADDI, "addi", TYPE_REGISTER, TYPE_REGISTER, TYPE_REGISTER),
             new Instruction(INST_SUBI, "subi", TYPE_REGISTER, TYPE_REGISTER, TYPE_REGISTER),
-            new Instruction(INST_CALL, "call", TYPE_FUNC),
+            new Instruction(INST_CALL, "call", TYPE_FUNC, TYPE_REGISTER, TYPE_REGISTER),
             new Instruction(INST_RET, "ret"),
             new Instruction(INST_GG, "gg"),
             new Instruction(INST_PRINT, "print", TYPE_REGISTER)

@@ -1,6 +1,7 @@
 grammar Byte;
 
 @members {
+    void gameOver(){;}
     void addFunction(String name, int nArgs){;}
     void addLabel(String name){;}
     void addCode(String instruction){;}
@@ -10,6 +11,7 @@ grammar Byte;
 }
 
 line:   stat+
+        {gameOver();}
     ;
 
 stat:   func NEWLINE

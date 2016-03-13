@@ -32,6 +32,7 @@ public class Instruction {
         this.id = id;
         this.name = name;
         this.a = a;
+        this.b = b;
         this.nParams = 2;
     }
 

@@ -68,6 +68,7 @@ public class ByteLexer extends Lexer {
 	}
 
 
+	    void gameOver(){;}
 	    void addFunction(String name, int nArgs){;}
 	    void addLabel(String name){;}
 	    void addCode(String instruction){;}

@@ -2,6 +2,8 @@ package org.bohao.vm.parser;
 
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.bohao.vm.Instruction;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -36,4 +38,9 @@ public class ByteCodeParserTest {
     }
 
 
+    @Test
+    public void testFindInstruction() throws Exception {
+        Instruction x = parser.findInstruction("movir");
+        Assert.assertEquals("movir", x.name);
+    }
 }
